@@ -1,0 +1,161 @@
+body {
+    background-color: #f4ae22;
+	position:relative;
+	
+}
+
+h1 {
+	
+    color: white;
+	font-size:34px;
+    text-align: center;
+}
+
+p {
+    font-family: verdana;
+    font-size: 20px;
+	text-align: center;
+}
+
+#top{
+	
+	padding : 20px;
+	
+	
+}
+
+#middle{
+	
+	
+	height:250px;
+	overflow: hidden;
+	clear:both;
+	width:100%;
+	display:inline-block;
+	margin: 0px auto;
+	padding: 0px;
+	
+}
+
+#left{
+	
+	
+	float:left;
+	text-align:left;
+	width:40%;
+	height:100%;
+	font-size:80px;
+	color:red;
+ 
+  
+}
+
+#mid{
+	
+	text-align:center;
+	font-size:50px;
+	width:20%;
+	height:100%;
+	float:left;
+	
+  
+}
+
+#right{
+	
+	text-align:right;
+	width:40%;
+	height:100%;
+	float:left;
+	font-size:80px;
+	color:red;
+	
+}
+
+#mid,#right,#left{
+	
+	position:relative;
+
+}
+
+#max{
+	
+	padding-right:20%;
+}
+
+
+#min{
+	padding-left:20%;	
+	
+}
+
+.rule{
+	padding-top:10px;
+	color: red;
+	font-size:12px;
+	text-align: center;
+}
+
+.chg{
+	
+	
+	font-size:30px;
+	color: white;
+	text-align: center;
+	padding:8px;
+	height:82px;
+	position:relative;
+}
+
+.btn {
+	
+    border: none;
+  
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+	background-color: white;
+    color: black;
+    border: 2px solid #555555;
+	}
+	
+
+.btn:hover {
+    background-color: #555555;
+    color: white;
+}
+
+
+#input[type=text] {
+    width:8%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+#input[type=text]:focus {
+    border: 3px solid #555;
+	
+	
+}
+
+
+#copyright{
+	
+	position:relative;
+	font-size: 14px;
+	color: black;
+	float:right;
+	
+}
+
