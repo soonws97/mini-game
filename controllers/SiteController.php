@@ -131,15 +131,15 @@ class SiteController extends Controller
 	
 	public function actionMinigame()
 	{
-		
-		if (Yii::$app->session['isLogin']){
+		$model = new User();
+		if ( $model->login(Yii::$app->request->post())) {
 			
-			return $this->render('minigame');
-				
-		}
-		
-		$time = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
-		return $this->render('index');
+            return $this->render('minigame');
+			Yii::$app->end();
+        }
+        return $this->render('login', [
+            'model' => $model,
+        ]);
 	}
 	
 	public function actionKey()
@@ -166,12 +166,13 @@ class SiteController extends Controller
 			if (Yii::$app->request->isAjax)
 			{
 				//===========================================   create first record  ======================================================
-				if(empty($userdata)){
-
+				if(empty($userdata))	
+					{				
+						
 						if($y <=1 || $y >=99 ){
-							var_dump("hi");return false;
-						}
-				
+								return false;
+							}
+
 						//create new data
 						$model = new GameRecord;
 						$model->ans=$ans;
@@ -242,22 +243,23 @@ class SiteController extends Controller
 					//============================= if user data not empty ================================
 					else{
 					
-							
+						
 						$time = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
 						$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
 						//$userDate = date("Y-m-d", strtotime($time)); 和上面一样用法
-						
+					
 						//===========================================   first record  ======================================================
 						if($gamecheck == 0 && $userDate != $today){	
-							if($y <=1 || $y >=99 ){
+								if($y <=1 || $y >=99 ){
 								return false;
 							}
-						var_dump('001');
-						$model = new GameRecord;
-						$model->ans=$ans;
-						$model->load($data);
-						$model->save();
-						if($y != $ans){
+
+								
+								$model = new GameRecord;
+								$model->ans=$ans;
+								$model->load($data);
+								$model->save();
+								if($y != $ans){
 								if($y > $ans){$big=$y;
 									$model->max_value=$big;}
 								elseif($y < $ans){$small=$y;
@@ -304,12 +306,14 @@ class SiteController extends Controller
 					
 						//===========================================   second record  ======================================================
 						elseif($gamecheck==1 && $userDate == $today){
-								var_dump('002');
+							
+								
 								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
 								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
 								if($y <=$mini || $y>=$large){
 									return false;
-								}	
+								}
+
 								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
 								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
 								if($y != $ans2){
@@ -360,7 +364,13 @@ class SiteController extends Controller
 							
 						//===========================================   third record  ======================================================
 						elseif($gamecheck==2 && $userDate == $today){
-								var_dump('003');
+								
+								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
+								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
+								if($y <=$mini || $y>=$large){
+									return false;
+								}
+
 								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
 								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
 								if($y != $ans2){
@@ -409,7 +419,13 @@ class SiteController extends Controller
 						
 						//===========================================   fourth record  ======================================================
 						elseif($gamecheck==3 && $userDate == $today){
-								var_dump('004');
+								
+								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
+								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
+								if($y <=$mini || $y>=$large){
+									return false;
+								}
+
 								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
 								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
 								if($y != $ans2){
@@ -458,7 +474,13 @@ class SiteController extends Controller
 						
 						//===========================================   fifth record  ======================================================
 						elseif($gamecheck==4 && $userDate == $today){
-								var_dump('005');
+								
+								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
+								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
+								if($y <=$mini || $y>=$large){
+									return false;
+								}
+
 								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
 								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
 								if($y != $ans2){

@@ -17,6 +17,13 @@
 				
 			
 			}
+			
+			document.getElementById('value').value=null;
+			document.getElementById('value').focus();
+			
+			
+			
+			
 				/*if(y != ans){
 					//获得最大值
 					a = Math.max(y,ans); 

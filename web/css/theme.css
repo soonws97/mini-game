@@ -159,3 +159,18 @@ p {
 	
 }
 
+#user{
+	font-size: 16px;
+	color: black;
+	font-family: verdana;
+}
+
+.log{
+	
+	position:relative;
+	float:right;
+	color: black;
+	
+	
+}
+
