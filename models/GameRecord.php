@@ -18,6 +18,7 @@ use Yii;
  * @property integer $token
  * @property integer $min_value
  * @property integer $max_value
+ * @property integer $playingNow
  * @property integer $ans
  */
 class GameRecord extends \yii\db\ActiveRecord
@@ -36,8 +37,8 @@ class GameRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['record_1', 'record_2', 'record_3', 'record_4', 'record_5', 'userID', 'token', 'min_value', 'max_value', 'ans'], 'integer'],
-            [['userID'], 'required'],
+            [['record_1', 'record_2', 'record_3', 'record_4', 'record_5', 'userID', 'token', 'min_value', 'max_value', 'playingNow', 'ans'], 'integer'],
+            [['userID', 'playingNow'], 'required'],
             [['playTime'], 'safe'],
         ];
     }
@@ -59,6 +60,7 @@ class GameRecord extends \yii\db\ActiveRecord
             'token' => Yii::t('app', 'Token'),
             'min_value' => Yii::t('app', 'Min Value'),
             'max_value' => Yii::t('app', 'Max Value'),
+            'playingNow' => Yii::t('app', 'Playing Now'),
             'ans' => Yii::t('app', 'Ans'),
         ];
     }

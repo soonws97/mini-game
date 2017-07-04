@@ -11,6 +11,8 @@ use Yii;
  * @property integer $recordID
  * @property integer $userID
  * @property integer $success
+ * @property string $successTime
+ * @property integer $usedTimes
  * @property integer $reward
  */
 class GameResult extends \yii\db\ActiveRecord
@@ -29,8 +31,9 @@ class GameResult extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['resultID', 'recordID', 'userID'], 'required'],
-            [['resultID', 'recordID', 'userID', 'success', 'reward'], 'integer'],
+            [['recordID', 'userID', 'successTime'], 'required'],
+            [['recordID', 'userID', 'success', 'usedTimes', 'reward'], 'integer'],
+            [['successTime'], 'safe'],
         ];
     }
 
@@ -44,6 +47,8 @@ class GameResult extends \yii\db\ActiveRecord
             'recordID' => Yii::t('app', 'Record ID'),
             'userID' => Yii::t('app', 'User ID'),
             'success' => Yii::t('app', 'Success'),
+            'successTime' => Yii::t('app', 'Success Time'),
+            'usedTimes' => Yii::t('app', 'Used Times'),
             'reward' => Yii::t('app', 'Reward'),
         ];
     }
