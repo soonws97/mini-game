@@ -239,11 +239,11 @@ class SiteController extends Controller
 					else{
 					
 						//$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
-						$userDate = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playDate;
+						$userDate = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->orderBy(['playDate'=>SORT_DESC])->one()->playDate;
 						//$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
 						//$userDate = date("Y-m-d", strtotime($time)); 和上面一样用法
 						
-						//===========================================   first record  ======================================================
+						//=========================================== record  ======================================================
 						if($gamecheck == 0 && $userDate != $today){	
 								if($y <=1 || $y >=99 ){
 								return false;
@@ -263,9 +263,10 @@ class SiteController extends Controller
 							}
 							
 							$ans2 = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->ans;
+							$userDate = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->orderBy(['playDate'=>SORT_DESC])->one()->playDate;
 							
 						if($y != $ans2){
-
+					
 							$large = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->max_value;
 							$mini = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->min_value;
 							if($y <=$mini || $y>=$large){
@@ -284,7 +285,9 @@ class SiteController extends Controller
 								$model->playingNow = $y;
 								$model -> userID = $uid;
 								//commmon item end
+								
 							if($userDate == $today){
+								
 								switch($gamecheck){
 									case 0:
 										$model->record_1 = $y;
@@ -314,9 +317,9 @@ class SiteController extends Controller
 								}
 							}
 							
-							$model->load($data);
+							//$model->load($data);
 							$model->save(false);
-							$gamecount->load($data);
+							//$gamecount->load($data);
 							$gamecount->save(false);
 							
 						}
@@ -387,19 +390,19 @@ class SiteController extends Controller
 								}
 							}
 							
-							$model->load($data);
+							//$model->load($data);
 							$model->save(false);
 							
-							$result->load($data);
+							//$result->load($data);
 							$result->save(false);
 							
 							$gamecount->SGreward = $reward;
 							$gamecount->gameCheck = 5;
-							$gamecount->load($data);
+							//$gamecount->load($data);
 							$gamecount->save(false);
 
 							$sgData->sg_balance = $sgBalance;
-							$sgData->load($data);
+							//$sgData->load($data);
 							$sgData->save(false);
 						}	
 					}//end 
