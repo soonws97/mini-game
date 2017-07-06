@@ -15,12 +15,15 @@ use app\models\User;
 	<div id="top">
 	<span id="user"><?php echo Yii::$app->session['userName'];?></span>
 	
-		<?php 	$today = date('Y-m-d');
+		<?php 
+			if($gamecheck <=0 ){}
+			else{$today = date('Y-m-d');
 			$userName =Yii::$app->session['userName'];
 			$user = User::find()->where('userName = :name' ,[':name' => $userName])->one();
 			$uid = $user->userID;
 			$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
 			$gamecheck = $user->gameCheck;
+			}
 			if($gamecheck <=0 ){}
 					else{
 							$gamedata = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one();
