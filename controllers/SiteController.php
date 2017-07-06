@@ -287,7 +287,7 @@ class SiteController extends Controller
 								//commmon item end
 								
 							if($userDate == $today){
-								var_dump("do6");
+								
 								switch($gamecheck){
 									case 0:
 										$model->record_1 = $y;
