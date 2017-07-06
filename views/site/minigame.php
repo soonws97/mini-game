@@ -25,13 +25,9 @@ AppAsset::register($this);
 			$uid = $user->userID;
 			$gamecheck = $user->gameCheck;
 			if($gamecheck <=0 ){}
-			else{$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
-			
-			}
-			if($gamecheck <=0 ){}
 					else{
 							$gamedata = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one();
-
+							$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
 							$ansNow = $gamedata->ans;
 							$val = $gamedata->playingNow;
 							$getToken = $gamedata->token;
@@ -134,17 +130,15 @@ AppAsset::register($this);
 			<div class="chg">
 			<br>
 			<?php
-				if($gamecheck >=5){
-					echo "您今天的次数已达成。请明天再来。";
-				}
-				elseif($gamecheck <5)
-				{
-					if($today == $date){
-						echo "您今天的次数已达成。请明天再来。";
-					}
-			?>
+			
+			if($gamecheck >=5){
+							echo "您今天的次数已达成。请明天再来。";
+							return false;
+						}	
+			elseif($gamecheck >=0 ){
+				?>
 				您还有 <?php echo 5-$gamecheck ?> 次机会哟。
-			<?php
+				<?php
 				}
 			?>
 

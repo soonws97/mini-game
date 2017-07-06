@@ -170,6 +170,10 @@ class SiteController extends Controller
 			if (Yii::$app->request->isAjax)
 			{
 				//===========================================   create first record  ======================================================
+				if($gamecheck >=5 ){
+								return false;
+							}
+				
 				$sgBalance = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one()->sg_balance;
 				if($sgBalance <=100 ){
 								return false;
@@ -349,7 +353,8 @@ class SiteController extends Controller
 								$result->successTime = date('Y-m-d G-i-s');
 								
 								$sgData = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one();
-								$sgBalance = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one()->sg_balance;
+								$sgBalance = $sgData->sg_balance;
+								$sgNegative = $sgData->sg_negative_balance;
 								
 							if($userDate == $today){
 								switch($gamecheck){
@@ -359,7 +364,7 @@ class SiteController extends Controller
 										$result->usedTimes = 1;
 										$result->reward = 10;
 										$sgBalance = $sgBalance - 10;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 10;
 										break;
 									case 1:
 										$model->record_2 = $y;
@@ -367,7 +372,7 @@ class SiteController extends Controller
 										$result->usedTimes = 2;
 										$result->reward = 5;
 										$sgBalance = $sgBalance - 5;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 5;
 										break;
 										
 									case 2:
@@ -376,7 +381,7 @@ class SiteController extends Controller
 										$result->usedTimes = 3;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 2;
 										break;
 									case 3:
 										$model->record_4 = $y;
@@ -384,7 +389,7 @@ class SiteController extends Controller
 										$result->usedTimes = 4;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 2;
 										break;
 									case 4:
 										$model->record_5 = $y;
@@ -392,7 +397,7 @@ class SiteController extends Controller
 										$result->usedTimes = 5;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 2;
 										break;
 										
 								}
