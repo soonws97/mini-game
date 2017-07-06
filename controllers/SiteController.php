@@ -153,10 +153,12 @@ class SiteController extends Controller
 		$user = User::find()->where('userName = :name' ,[':name' => $userName])->one();	//以用户名找用户ID
 		$uid = $user->userID;
 		$userdata = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one();//获得用户资料
+
 		$gamecheck = $user->gameCheck;//游玩次数
 		$gamecount = $user;//全部关于那用户的
 		//$ans = rand(2,98);
 		$ans = 49;
+
 		$min = 1;
 		$max = 99;
 		$data = Yii::$app->request->post();	
@@ -249,7 +251,7 @@ class SiteController extends Controller
 						//$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
 						//$userDate = date("Y-m-d", strtotime($time)); 和上面一样用法
 						
-						//=========================================== record  ======================================================
+						//=========================================== detect record  ======================================================
 						if($gamecheck == 0 && $userDate != $today){	
 								if($y <=1 || $y >=99 ){
 								return false;
