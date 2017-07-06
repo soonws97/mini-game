@@ -180,11 +180,9 @@ class SiteController extends Controller
 							}
 							
 				if(empty($userdata)){
-					
 						if($y <=1 || $y >=99 ){
 								return false;
-								
-							}
+						}
 						//create new data
 						$model = new GameRecord;
 						$model->ans=$ans;
@@ -193,8 +191,6 @@ class SiteController extends Controller
 						$model->record_1 = $y;	
 						$model->playingNow = $y;
 						$model->userID = $uid;
-						$model->load($data);
-						$model->save();
 						//For detect and adding bigger and smaller answer into database.
 							if($y != $ans){
 							//user ans bigger than ans
@@ -209,27 +205,22 @@ class SiteController extends Controller
 
 								}
 							//insert value to model, and save to database							
-							$model->load($data);
 							$model->save(false);
 							$gamecount->gameCheck = 1;
 							$gamecount->save(false);
 							
-							var_dump('000');
-							
-							
+							var_dump('000');	
 						}
 						
 						//if user straight correct
 						elseif ($y == $ans){
 							
 							$model->token=0;
-							$model->load($data);
 							$model->save(false);
 							$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
 							$reward += 10;
 							$gamecount->SGreward = $reward;
 							$gamecount->gameCheck = 5;
-							$gamecount->load($data);
 							$gamecount->save(false);
 							
 							//for result table
@@ -242,7 +233,6 @@ class SiteController extends Controller
 							$result->successTime = date('Y-m-d G-i-s');
 							$result->usedTimes = 1;
 							$result->reward = 10;
-							$result->load($data);
 							$result->save(false);
 						}
 
@@ -274,18 +264,19 @@ class SiteController extends Controller
 								
 							}
 							
-							$ans2 = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->ans;
-							$userDate = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->orderBy(['playDate'=>SORT_DESC])->one()->playDate;
+							$record = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->orderBy(['playDate'=>SORT_DESC])->one();
+							$ans2 = $record->ans;
+							$userDate = $record->playDate;
 							
 						if($y != $ans2){
 					
-							$large = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->max_value;
-							$mini = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->min_value;
+							$large = $record->max_value;
+							$mini = $record->min_value;
 							if($y <=$mini || $y>=$large){
 									return false;
 								}
 							
-							$model = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one();
+							$model = $record;
 							
 							//common item start
 							if($y > $ans2){
@@ -337,7 +328,7 @@ class SiteController extends Controller
 							
 					elseif($y == $ans2){
 								
-								$model = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one();
+								$model = $record;
 								$model->playingNow = $y;
 								
 								$model -> userID = $uid;
