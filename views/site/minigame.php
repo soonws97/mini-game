@@ -40,7 +40,6 @@ use app\models\User;
 						
 					}
 					else{
-						
 							$time = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
 							$ansNow = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->ans;
 							$val = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->playingNow;
@@ -48,20 +47,11 @@ use app\models\User;
 							$ansTime =  date("Y-m-d", strtotime($time));
 							$nowMin = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->min_value;
 						
-						if($val == $ansNow)
-						{
-							
-							
-							
-							
-						}
-						else{
-							
-							echo $nowMin;
-						}
-						
-						
-
+							if($val == $ansNow){
+							}
+							else{
+								echo $nowMin;
+							}
 					}
 				?>
 			</h2>

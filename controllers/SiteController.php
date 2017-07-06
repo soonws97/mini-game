@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use app\models\User;
 use app\models\GameRecord;
 use app\models\GameResult;
+use app\models\SGGameRewardBalance;
 use app\models\ContactForm;
 
 
@@ -145,20 +146,20 @@ class SiteController extends Controller
 	public function actionKey()
 	
 	{
-		
-		$today = date('Y-m-d');//获得时间
+		$today = date('Y-m-d');//获得日期
+		$t	= date('G:i:s');//获得时间
 		//date('Y-m-d-G-i-s'); year - month - day - 24hour - minutes - second
 		$userName =Yii::$app->session['userName'];//获得用户名
 		$uid = User::find()->where('userName = :name' ,[':name' => $userName])->one()->userID;	//以用户名找用户ID
-		$userdata = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one();//获得游戏时间
+		$userdata = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one();//获得用户资料
 		$gamecheck = User::find()->where('userID = :id' , [':id' => $uid ])->one()->gameCheck;//游玩次数
-		$gamecount = User::find()->where('userID = :id' , [':id' => $uid ])->one();//全部关于那id的
-		$ans = rand(2,98);
+		$gamecount = User::find()->where('userID = :id' , [':id' => $uid ])->one();//全部关于那用户的
+		//$ans = rand(2,98);
+		$ans = 49;
 		$min = 1;
 		$max = 99;
 		$data = Yii::$app->request->post();	
 		$y = $data['record'];
-		$a  = max($max,$y);
 		$small = 1;
 		$big = 99;
 		$i = 0;
@@ -168,40 +169,38 @@ class SiteController extends Controller
 				//===========================================   create first record  ======================================================
 				if(empty($userdata))	
 					{				
-						
 						if($y <=1 || $y >=99 ){
 								return false;
+								
 							}
-
 						//create new data
 						$model = new GameRecord;
 						$model->ans=$ans;
+						$model->playDate = $today;
+						$model->playTime = $t;
+						$model->record_1 = $y;	
+						$model->playingNow = $y;
+						$model->userID = $uid;
 						$model->load($data);
 						$model->save();
 						//For detect and adding bigger and smaller answer into database.
-						if($y != $ans){
+							if($y != $ans){
 							//user ans bigger than ans
-							if($y > $ans){
-								$big=$y;
-								$model->max_value=$big;
-							}
-							//user ans smaller than ans
-							elseif($y < $ans){
-								$small=$y;
-								$model->min_value=$small;
-							}
-							//insert value to model, and save to database
-							$model->record_1 = $y;	
-							$model->playingNow = $y;	
+								if($y > $ans){
+									$big=$y;
+									$model->max_value=$big;
+								}
+								//user ans smaller than ans
+								elseif($y < $ans){
+									$small=$y;
+									$model->min_value=$small;
+
+								}
+							//insert value to model, and save to database							
 							$model->load($data);
-							$model -> userID = $uid;
 							$model->save(false);
 							$gamecount->gameCheck = 1;
 							$gamecount->save(false);
-							
-							$time = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-							$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
-							$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
 							
 							var_dump('000');
 							
@@ -211,323 +210,199 @@ class SiteController extends Controller
 						//if user straight correct
 						elseif ($y == $ans){
 							
-							$model->record_1 = $y;
-							$model->playingNow = $y;
-							$model -> userID = $uid;
+							$model->token=0;
 							$model->load($data);
 							$model->save(false);
 							$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
 							$reward += 10;
 							$gamecount->SGreward = $reward;
 							$gamecount->gameCheck = 5;
+							$gamecount->load($data);
 							$gamecount->save(false);
 							
 							//for result table
 							$result = new GameResult;		
-							$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-							$recordID = GameRecord::find()->where('userID = :id and playTime = :pt' , [':id' => $uid , ':pt'=> $wontime ])->one()->recordID;
+							$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playDate;
+							$recordID = GameRecord::find()->where('userID = :id and playDate = :pd' , [':id' => $uid , ':pd'=> $wontime ])->one()->recordID;
 							$result->recordID = $recordID;
 							$result->userID = $uid;
 							$result->success = 1;
-							$result->successTime = $wontime;
+							$result->successTime = date('Y-m-d G-i-s');
 							$result->usedTimes = 1;
 							$result->reward = 10;
 							$result->load($data);
 							$result->save(false);
-							$model->token=0;
-							$model->load($data);
-							$model->save(false);
 						}
 
 					}
 					//============================= if user data not empty ================================
 					else{
 					
-						
-						$time = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-						$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
+						//$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
+						$userDate = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playDate;
+						//$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
 						//$userDate = date("Y-m-d", strtotime($time)); 和上面一样用法
 					
 						//===========================================   first record  ======================================================
 						if($gamecheck == 0 && $userDate != $today){	
 								if($y <=1 || $y >=99 ){
 								return false;
-							}
-
-								
+								}
+								//give ans into database
 								$model = new GameRecord;
 								$model->ans=$ans;
 								$model->load($data);
 								$model->save();
-								if($y != $ans){
-								if($y > $ans){$big=$y;
-									$model->max_value=$big;}
-								elseif($y < $ans){$small=$y;
-									$model->min_value=$small;}
-								$model->record_1 = $y;	
-								$model->playingNow = $y;
-								$model->load($data);
-								$model -> userID = $uid;
-								$model->save(false);
-								$gamecount->gameCheck = 1;
-								$gamecount->save(false);
 							}
-								
-						elseif ($y == $ans){
 							
-								$model->record_1 = $y;
-								$model->playingNow = $y;								
+							$ans2 = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->ans;
+						
+						if($y != $ans2){
+
+							$large = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->max_value;
+							$mini = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->min_value;
+							if($y <=$mini || $y>=$large){
+									return false;
+								}
+							
+							$model = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one();
+							
+							//common item start
+							if($y > $ans2){
+								$model->max_value=$y;}
+							elseif($y < $ans2){
+								$model->min_value=$y;}
+								$model->playDate = $today;
+								$model->playTime = $t;
+								$model->playingNow = $y;
 								$model -> userID = $uid;
-								$model->load($data);
-								$model->save(false);
+								//commmon item end
+							if($userDate == $today){
+								switch($gamecheck){
+									case 0:
+										$model->record_1 = $y;
+										$gamecount->gameCheck = 1;
+										var_dump("000");
+										break;
+									case 1:
+										$model->record_2 = $y;
+										$gamecount->gameCheck = 2;
+										var_dump("001");
+										break;
+									case 2:
+										$model->record_3 = $y;
+										$gamecount->gameCheck = 3;
+										var_dump("002");
+										break;
+									case 3:
+										$model->record_4 = $y;
+										$gamecount->gameCheck = 4;
+										var_dump("003");
+										break;	
+									case 4:
+										$model->record_5 = $y;
+										$gamecount->gameCheck = 5;
+										var_dump("004");
+										break;
+								}
+							}
+							
+							$model->load($data);
+							$model->save(false);
+							$gamecount->load($data);
+							$gamecount->save(false);
+							
+						}
+						
+					elseif($y == $ans2){
+						
+								$model = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one();
+								$model->playingNow = $y;
+								
+								$model -> userID = $uid;
+								$model->token=0;
+								
 								$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
-								$reward += 10;
-								$gamecount->SGreward = $reward;
-								$gamecount->gameCheck = 5;
-								$gamecount->save(false);
-									
 								$result = new GameResult;		
-								$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-								$recordID = GameRecord::find()->where('userID = :id and playTime = :pt' , [':id' => $uid , ':pt'=> $wontime ])->one()->recordID;
+								$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playDate;
+								$recordID = GameRecord::find()->where('userID = :id and playDate = :pd' , [':id' => $uid , ':pd'=> $wontime ])->one()->recordID;
 								$result->recordID = $recordID;
 								$result->userID = $uid;
 								$result->success = 1;
-								$result->successTime = $wontime;
-								$result->usedTimes = 1;
-								$result->reward = 10;
-								$result->load($data);
-								$result->save(false);
-								$model->token=0;
-								$model->load($data);
-								$model->save(false);
-							}
-						
-					}	
-					
-						//===========================================   second record  ======================================================
-						elseif($gamecheck==1 && $userDate == $today){
-							
+								$result->successTime = date('Y-m-d G-i-s');
 								
-								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
-								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
-								if($y <=$mini || $y>=$large){
-									return false;
-								}
-
-								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
-								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
-								if($y != $ans2){
-									if($y > $ans2){$big=$y;
-										$model->max_value=$big;}
-									elseif($y < $ans2){$small=$y;
-										$model->min_value=$small;}
-									$model->record_2 = $y;
-									$model->playingNow = $y;
-									$model->load($data);
-									$model->userID = $uid;
-									$model->save(false);
-									$gamecount->gameCheck = 2;
-									$gamecount->save(false);
-								}
-								elseif($y ==$ans2){
-									
-									$model->record_2 = $y;
-									$model->playingNow = $y;
-									$model -> userID = $uid;
-									$model->load($data);
-									$model->save(false);
-									$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
-									$reward += 5;
-									$gamecount->SGreward = $reward;
-									$gamecount->gameCheck = 5;
-									$gamecount->save(false);
-									
-									$result = new GameResult;		
-									$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-									$recordID = GameRecord::find()->where('userID = :id and playTime = :pt' , [':id' => $uid , ':pt'=> $wontime ])->one()->recordID;
-									$result->recordID = $recordID;
-									$result->userID = $uid;
-									$result->success = 1;
-									$result->successTime = $wontime;
-									$result->usedTimes = 2;
-									$result->reward = 5;
-									$result->load($data);
-									$result->save(false);
-									$model->token=0;
-									$model->load($data);
-									$model->save(false);
-								}
-							
+								$sgData = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one();
+								$sgBalance = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one()->sg_balance;
 								
-								
-						}
-							
-						//===========================================   third record  ======================================================
-						elseif($gamecheck==2 && $userDate == $today){
-								
-								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
-								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
-								if($y <=$mini || $y>=$large){
-									return false;
-								}
-
-								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
-								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
-								if($y != $ans2){
-									if($y > $ans2){$big=$y;
-										$model->max_value=$big;}
-									elseif($y < $ans2){$small=$y;
-										$model->min_value=$small;}
-									$model->record_3 = $y;
-									$model->playingNow = $y;
-									$model->load($data);
-									$model->userID = $uid;
-									$model->save(false);
-									$gamecount->gameCheck = 3;
-									$gamecount->save(false);
-								}
-								elseif($y ==$ans2){
-									
-									$model->record_3 = $y;
-									$model->playingNow = $y;
-									$model -> userID = $uid;
-									$model->load($data);
-									$model->save(false);
-									$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
-									$reward += 2;
-									$gamecount->SGreward = $reward;
-									$gamecount->gameCheck = 5;
-									$gamecount->save(false);
-									
-									$result = new GameResult;		
-									$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-									$recordID = GameRecord::find()->where('userID = :id and playTime = :pt' , [':id' => $uid , ':pt'=> $wontime ])->one()->recordID;
-									$result->recordID = $recordID;
-									$result->userID = $uid;
-									$result->success = 1;
-									$result->successTime = $wontime;
-									$result->usedTimes = 1;
-									$result->reward = 2;
-									$result->load($data);
-									$result->save(false);
-									$model->token=0;
-									$model->load($data);
-									$model->save(false);
-									}
-								
-						}
-						
-						//===========================================   fourth record  ======================================================
-						elseif($gamecheck==3 && $userDate == $today){
-								
-								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
-								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
-								if($y <=$mini || $y>=$large){
-									return false;
-								}
-
-								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
-								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
-								if($y != $ans2){
-									if($y > $ans2){$big=$y;
-										$model->max_value=$big;}
-									elseif($y < $ans2){$small=$y;
-										$model->min_value=$small;}
-									$model->record_4 = $y;
-									$model->playingNow = $y;
-									$model->load($data);
-									$model->userID = $uid;
-									$model->save(false);
-									$gamecount->gameCheck = 4;
-									$gamecount->save(false);
-								}
-								elseif($y ==$ans2){
-									
-									$model->record_4 = $y;
-									$model->playingNow = $y;
-									$model -> userID = $uid;
-									$model->load($data);
-									$model->save(false);
-									$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
-									$reward += 2;
-									$gamecount->SGreward = $reward;
-									$gamecount->gameCheck = 5;
-									$gamecount->save(false);
-									
-									$result = new GameResult;		
-									$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-									$recordID = GameRecord::find()->where('userID = :id and playTime = :pt' , [':id' => $uid , ':pt'=> $wontime ])->one()->recordID;
-									$result->recordID = $recordID;
-									$result->userID = $uid;
-									$result->success = 1;
-									$result->successTime = $wontime;
-									$result->usedTimes = 1;
-									$result->reward = 2;
-									$result->load($data);
-									$result->save(false);
-									$model->token=0;
-									$model->load($data);
-									$model->save(false);
-								}
-								
-						}
-						
-						//===========================================   fifth record  ======================================================
-						elseif($gamecheck==4 && $userDate == $today){
-								
-								$large = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->max_value;
-								$mini = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one()->min_value;
-								if($y <=$mini || $y>=$large){
-									return false;
-								}
-
-								$model = GameRecord::find()->where('userID = :id and playTime =:pt' , [':id' => $uid , ':pt'=> $time ])->one();
-								$ans2 = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->ans;
-								if($y != $ans2){
-									if($y > $ans2){$big=$y;
-										$model->max_value=$big;}
-									elseif($y < $ans2){$small=$y;
-										$model->min_value=$small;}
-									$model->record_5 = $y;
-									$model->playingNow = $y;
-									$model->load($data);
-									$model->userID = $uid;
-									$model->save(false);
-									$gamecount->gameCheck = 5;
-									$gamecount->save(false);
-								}
-								elseif($y ==$ans2){
-									
-									$model->record_5 = $y;
-									$model->playingNow = $y;
-									$model -> userID = $uid;
-									$model->load($data);
-									$model->save(false);
-									$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
-									$reward += 2;
-									$gamecount->SGreward = $reward;
-									$gamecount->gameCheck = 5;
-									$gamecount->save(false);
-									
-									$result = new GameResult;		
-									$wontime = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-									$recordID = GameRecord::find()->where('userID = :id and playTime = :pt' , [':id' => $uid , ':pt'=> $wontime ])->one()->recordID;
-									$result->recordID = $recordID;
-									$result->userID = $uid;
-									$result->success = 1;
-									$result->successTime = $wontime;
-									$result->usedTimes = 1;
-									$result->reward = 2;
-									$result->load($data);
-									$result->save(false);
-									$model->token=0;
-									$model->load($data);
-									$model->save(false);
-								}
-						}
+							if($userDate == $today){
+								switch($gamecheck){
+									case '0':
+										$model->record_1 = $y;
+										$reward +=10;
+										$result->usedTimes = 1;
+										$result->reward = 10;
+										$sgBalance = $sgBalance - 10;
+										$sgBalance->sg_negative_balance = 10;
 										
+									case '1':
+										$model->record_2 = $y;
+										$reward +=5;
+										$result->usedTimes = 2;
+										$result->reward = 5;
+										$sgBalance = $sgBalance - 5;
+										$sgBalance->sg_negative_balance = 10;
+										
+									case '2':
+										$model->record_3 = $y;
+										$reward +=2;
+										$result->usedTimes = 3;
+										$result->reward = 2;
+										$sgBalance = $sgBalance - 2;
+										$sgBalance->sg_negative_balance = 10;
+										
+									case '3':
+										$model->record_4 = $y;
+										$reward +=2;
+										$result->usedTimes = 4;
+										$result->reward = 2;
+										$sgBalance = $sgBalance - 2;
+										$sgBalance->sg_negative_balance = 10;
+										
+									case '4':
+										$model->record_5 = $y;
+										$reward +=2;
+										$result->usedTimes = 5;
+										$result->reward = 2;
+										$sgBalance = $sgBalance - 2;
+										$sgData->sg_negative_balance = 10;
+										
+										
+								}
+							}
+							
+							$model->load($data);
+							$model->save(false);
+							
+							$result->load($data);
+							$result->save(false);
+							
+							$gamecount->SGreward = $reward;
+							$gamecount->gameCheck = 5;
+							$gamecount->load($data);
+							$gamecount->save(false);
 
-					}
+							$sgData->sg_balance = $sgBalance;
+							$sgData->load($data);
+							$sgData->save(false);
+						}	
+					}//end 
 			}
+	}
 }
-}
+
+				
+				
+				
+				
+				
+				
