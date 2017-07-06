@@ -15,18 +15,38 @@ use app\models\User;
 	
 	<?php 	$today = date('Y-m-d');
 			$userName =Yii::$app->session['userName'];
-			$uid = User::find()->where('userName = :name' ,[':name' => $userName])->one()->userID;
-			$gamecheck = User::find()->where('userID = :id' , [':id' => $uid ])->one()->gameCheck;
-			$userdata = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one();
-			$gamecount = User::find()->where('userID = :id' , [':id' => $uid ])->one();
+			$user = User::find()->where('userName = :name' ,[':name' => $userName])->one();
+			$uid = $user->userID;
+			$gamecheck = $user->gameCheck;
+			if($gamecheck <=0 ){
+						
+						
+					}
+					else{
+							$gamedata = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one();
+							$ansNow = $gamedata->ans;
+							$val = $gamedata->playingNow;
+							$getToken = $gamedata->token;
+							$nowMin = $gamedata->min_value;
+							
+					}
 			
 			?>
 			
 	<a href="<?php echo yii\helpers\Url::to(['site/logout'])?>" class="log">登出</a>
-			
-	
-	
-		<h1>您是否是我们要找的那个有缘人呢~~~</h1>
+						
+						<h1> <?php 	if($gamecheck <=0 ){
+											echo "您是否是我们要找的那个有缘人呢~~~";
+											
+										}
+					else { 					
+						if($getToken == 0)
+											{
+												echo "恭喜你，您就是我们要找的幸运儿！";
+											}
+					}
+
+					?> </h1>
 	</div>
 
 	<div id="middle">
@@ -34,20 +54,13 @@ use app\models\User;
 
 		<div id="left" >
 			<h2 id="min" >
-				<?php 
-					if($gamecheck <=0 ){
+				<?php 	
+				if($gamecheck <=0 ){
 						
 						
 					}
-					else{
-							$time = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playTime;
-							$ansNow = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->ans;
-							$val = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->playingNow;
-							$getToken = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->token;
-							$ansTime =  date("Y-m-d", strtotime($time));
-							$nowMin = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->min_value;
-						
-							if($val == $ansNow){
+					else{ 
+					if($val == $ansNow){
 							}
 							else{
 								echo $nowMin;
@@ -95,7 +108,7 @@ use app\models\User;
 							
 						}
 						else{
-							$nowMax = GameRecord::find()->where('userID = :id and playTime =:t' , [':id' => $uid , ':t'=> $time ])->one()->max_value;
+							$nowMax = $gamedata->max_value;
 							echo $nowMax;
 						}
 					}
@@ -132,15 +145,9 @@ use app\models\User;
 			<div class="chg">
 			<br>
 			<?php 
-			if($gamecheck ==5){
-				
-				if($getToken == 0)
-						{
-							echo "恭喜你，您就是我们要找的幸运儿！";
-						}
-						else{
+			if($gamecheck >=5){	
 							echo "您今天的次数已达成。请明天再来。";
-							}
+							
 			}
 			elseif($gamecheck <5)
 			{
