@@ -323,9 +323,9 @@ class SiteController extends Controller
 							$gamecount->save(false);
 							
 						}
-						
+							
 					elseif($y == $ans2){
-						
+								
 								$model = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one();
 								$model->playingNow = $y;
 								
@@ -346,46 +346,47 @@ class SiteController extends Controller
 								
 							if($userDate == $today){
 								switch($gamecheck){
-									case '0':
+									case 0:
 										$model->record_1 = $y;
 										$reward +=10;
 										$result->usedTimes = 1;
 										$result->reward = 10;
 										$sgBalance = $sgBalance - 10;
-										$sgBalance->sg_negative_balance = 10;
-										
-									case '1':
+										$sgData->sg_negative_balance = 10;
+										break;
+									case 1:
 										$model->record_2 = $y;
 										$reward +=5;
 										$result->usedTimes = 2;
 										$result->reward = 5;
 										$sgBalance = $sgBalance - 5;
-										$sgBalance->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = 10;
+										break;
 										
-									case '2':
+									case 2:
 										$model->record_3 = $y;
 										$reward +=2;
 										$result->usedTimes = 3;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgBalance->sg_negative_balance = 10;
-										
-									case '3':
+										$sgData->sg_negative_balance = 10;
+										break;
+									case 3:
 										$model->record_4 = $y;
 										$reward +=2;
 										$result->usedTimes = 4;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgBalance->sg_negative_balance = 10;
-										
-									case '4':
+										$sgData->sg_negative_balance = 10;
+										break;
+									case 4:
 										$model->record_5 = $y;
 										$reward +=2;
 										$result->usedTimes = 5;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
 										$sgData->sg_negative_balance = 10;
-										
+										break;
 										
 								}
 							}
