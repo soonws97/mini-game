@@ -135,12 +135,13 @@ AppAsset::register($this);
 			<br>
 			<?php
 				if($gamecheck >=5){
-					if($today == $date){
-						echo "您今天的次数已达成。请明天再来。";
-					}
+					echo "您今天的次数已达成。请明天再来。";
 				}
 				elseif($gamecheck <5)
 				{
+					if($today == $date){
+						echo "您今天的次数已达成。请明天再来。";
+					}
 			?>
 				您还有 <?php echo 5-$gamecheck ?> 次机会哟。
 			<?php
