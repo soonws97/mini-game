@@ -17,20 +17,16 @@ AppAsset::register($this);
 <body>
 	<div id="top">
 	<span id="user"><?php echo Yii::$app->session['userName'];?></span>
-<<<<<<< HEAD
-	
 		<?php 
-			if($gamecheck <=0 ){}
-			else{$today = date('Y-m-d');
-=======
+			$today = date('Y-m-d');
 
-		<?php 	$today = date('Y-m-d');
->>>>>>> 91ec77167180e209a7f2a3eb45f3c2f4d8a3196b
 			$userName =Yii::$app->session['userName'];
 			$user = User::find()->where('userName = :name' ,[':name' => $userName])->one();
 			$uid = $user->userID;
-			$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
 			$gamecheck = $user->gameCheck;
+			if($gamecheck <=0 ){}
+			else{$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
+			
 			}
 			if($gamecheck <=0 ){}
 					else{
@@ -138,9 +134,11 @@ AppAsset::register($this);
 			<div class="chg">
 			<br>
 			<?php
-				if($gamecheck >=5 || $today == $date){
+				if($gamecheck >=5){
+					if($today == $date){
 						echo "您今天的次数已达成。请明天再来。";
 					}
+				}
 				elseif($gamecheck <5)
 				{
 			?>
