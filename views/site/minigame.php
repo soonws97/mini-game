@@ -153,7 +153,7 @@ use app\models\User;
 
 			</div>
 
-			<h5 id="copyright">Copyright © 政隆 & Weisheng </h5>
+			<h5 id="copyright"></h5>
 </div>
 
 </body>
