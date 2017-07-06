@@ -14,7 +14,7 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord
 {
-	
+
 	public $userName;
     /**
      * @inheritdoc
@@ -50,7 +50,7 @@ class User extends \yii\db\ActiveRecord
             'gameCheck' => Yii::t('app', 'Game Check'),
         ];
     }
-	
+
 	public function validatePass()
     {
       if(!$this->hasErrors()) {
@@ -60,24 +60,22 @@ class User extends \yii\db\ActiveRecord
         }
       }
     }
-	
-	 
+
+
     public function login($data)
     {
         $this->scenario = "login";
         if ($this->load($data)  && $this->validate())
         {
-     
+
             $session = Yii::$app->session;
             $session['userName'] = $this->userName;
-			
+
             $session['isLogin'] = 1;
             return (bool)$session['isLogin'];
         }
         return false;
     }
-	
 
-	
-	
+
 }
