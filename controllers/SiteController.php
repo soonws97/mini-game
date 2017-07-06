@@ -167,8 +167,13 @@ class SiteController extends Controller
 			if (Yii::$app->request->isAjax)
 			{
 				//===========================================   create first record  ======================================================
-				if(empty($userdata))	
-					{				
+				$sgBalance = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one()->sg_balance;
+				if($sgBalance <=100 ){
+								return false;
+							}
+							
+				if(empty($userdata)){
+					
 						if($y <=1 || $y >=99 ){
 								return false;
 								
