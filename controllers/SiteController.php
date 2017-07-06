@@ -156,8 +156,8 @@ class SiteController extends Controller
 
 		$gamecheck = $user->gameCheck;//游玩次数
 		$gamecount = $user;//全部关于那用户的
-		//$ans = rand(2,98);
-		$ans = 49;
+		$ans = rand(2,98);
+		//$ans = 49;
 
 		$min = 1;
 		$max = 99;
