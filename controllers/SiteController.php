@@ -242,21 +242,28 @@ class SiteController extends Controller
 						$userDate = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->one()->playDate;
 						//$userDate = Yii::$app->formatter->asDate($time, 'yyyy-MM-dd');
 						//$userDate = date("Y-m-d", strtotime($time)); 和上面一样用法
-					
+						
 						//===========================================   first record  ======================================================
 						if($gamecheck == 0 && $userDate != $today){	
 								if($y <=1 || $y >=99 ){
 								return false;
 								}
+								
 								//give ans into database
 								$model = new GameRecord;
 								$model->ans=$ans;
-								$model->load($data);
+								$model->userID = $uid;
+								$model->playDate = $today;
+								$model->playTime = $t;	
+								$model->playingNow = $y;
+								//$model->load($data);
 								$model->save();
+								//var_dump($model);exit;
+								
 							}
 							
 							$ans2 = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->ans;
-						
+							
 						if($y != $ans2){
 
 							$large = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->max_value;

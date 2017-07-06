@@ -14,8 +14,8 @@ use Yii;
  * @property integer $record_4
  * @property integer $record_5
  * @property integer $userID
- * @property integer $playDate
- * @property integer $playTime
+ * @property string $playDate
+ * @property string $playTime
  * @property integer $token
  * @property integer $min_value
  * @property integer $max_value
@@ -38,8 +38,9 @@ class GameRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['record_1', 'record_2', 'record_3', 'record_4', 'record_5', 'userID', 'playDate', 'playTime', 'token', 'min_value', 'max_value', 'playingNow', 'ans'], 'integer'],
+            [['record_1', 'record_2', 'record_3', 'record_4', 'record_5', 'userID', 'token', 'min_value', 'max_value', 'playingNow', 'ans'], 'integer'],
             [['userID', 'playingNow'], 'required'],
+            [['playDate', 'playTime'], 'safe'],
         ];
     }
 
