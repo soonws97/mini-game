@@ -112,23 +112,10 @@ AppAsset::register($this);
 		</p>
 		<hr>
 	</div>
-		<div class="rule">
-
-			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapses" aria-expanded="false" aria-controls="collapses">游戏规则  </button>
-
-
-			<div class="collapse" id="collapses">
-				 <div>
-					在1 - 99 之间猜个数字。每位用户只能有<mark><b>5</b></mark>次机会，您只需要猜中系统给予的号码，就能领取我们派送的奖励。
-				<br>
-					第一次直接中奖将获得奖励10元<br>
-					第二次中奖将获得奖励5元<br>
-					第三,四,五次中奖将获得奖励2元。<br>
-				</div>
-			</div>
-		</div>
-			<div class="chg">
-			<br>
+	
+	<div class="chg">
+	
+			
 			<?php
 			
 			if($gamecheck >=5){
@@ -144,7 +131,50 @@ AppAsset::register($this);
 
 
 			</div>
+	
+		
+	
+		<div class="rule">
 
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapses" aria-expanded="false" aria-controls="collapses">游戏规则  </button>
+			<div class="collapse" id="collapses">
+				 <div id="showrule">
+					用户只需在1 - 99 之间猜个数字。每位用户只能有<mark><b>5</b></mark>次机会，您只需要猜中系统给予的号码，就能领取我们派送的奖励。
+				<br>
+				</div>
+				
+				<div id="rewardtable">
+					<table>
+				  <tr>
+					<th>次数</th>
+					<th>金额</th>
+					
+				  </tr>
+				  <tr>
+					<td>1次</td>
+					<td>RM10</td>
+				  </tr>
+				  <tr>
+					<td>2次</td>
+					<td>RM5</td>
+				  </tr>
+				  <tr>
+					<td>3,4,5次</td>
+					<td>RM2</td>
+				  </tr>
+				  </table>
+				</div>
+				
+				
+				
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
 			<h5 id="copyright"></h5>
 </div>
 
