@@ -97,21 +97,60 @@ p {
 	text-align: center;
 }
 
+
+#showrule{
+	background-color: white;
+	position:relative;
+	font-size: 14px;
+	text-align: left;
+	padding:10px;
+	font-family: verdana;
+	
+}
+
+
+#rewardtable{
+	background-color: white;
+	position:relative;
+	font-size: 14px;
+	text-align: left;
+	padding:10px;
+	font-family: verdana;
+	
+	border: 1px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+
+
+
+
 .chg{
 	
 	
 	font-size:30px;
 	color: white;
+	padding: 8px;
 	text-align: center;
-	padding:8px;
-	height:82px;
+	height:50px;
 	position:relative;
 }
+
 
 .btn {
 	
     border: none;
-  
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
