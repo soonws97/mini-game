@@ -1,11 +1,12 @@
 body {
-    background-color: #f3ac76;
+    background-image: -webkit-linear-gradient(bottom left, #FF9D1C 0%, #FF4019 100%);
+    min-height: 100vh;
 	position:relative;
-	
+
 }
 
 h1 {
-	
+
     color: white;
 	font-size:34px;
     text-align: center;
@@ -18,15 +19,15 @@ p {
 }
 
 #top{
-	
+
 	padding : 20px;
-	
-	
+
+
 }
 
 #middle{
-	
-	
+
+
 	height:250px;
 	overflow: hidden;
 	clear:both;
@@ -34,59 +35,59 @@ p {
 	display:inline-block;
 	margin: 0px auto;
 	padding: 0px;
-	
+
 }
 
 #left{
-	
-	
+
+
 	float:left;
 	text-align:left;
 	width:40%;
 	height:100%;
 	font-size:80px;
 	color:red;
- 
-  
+
+
 }
 
 #mid{
-	
+
 	text-align:center;
 	font-size:50px;
 	width:20%;
 	height:100%;
 	float:left;
-	
-  
+
+
 }
 
 #right{
-	
+
 	text-align:right;
 	width:40%;
 	height:100%;
 	float:left;
 	font-size:80px;
 	color:red;
-	
+
 }
 
 #mid,#right,#left{
-	
+
 	position:relative;
 
 }
 
 #max{
-	
+
 	padding-right:20%;
 }
 
 
 #min{
-	padding-left:20%;	
-	
+	padding-left:20%;
+
 }
 
 .rule{
@@ -97,8 +98,8 @@ p {
 }
 
 .chg{
-	
-	
+
+
 	font-size:30px;
 	color: white;
 	text-align: center;
@@ -108,9 +109,9 @@ p {
 }
 
 .btn {
-	
+
     border: none;
-  
+
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
@@ -124,7 +125,7 @@ p {
     color: black;
     border: 2px solid #555555;
 	}
-	
+
 
 .btn:hover {
     background-color: #555555;
@@ -145,18 +146,18 @@ p {
 
 #input[type=text]:focus {
     border: 3px solid #555;
-	
-	
+
+
 }
 
 
 #copyright{
-	
+
 	position:relative;
 	font-size: 14px;
 	color: black;
 	float:right;
-	
+
 }
 
 #user{
@@ -166,11 +167,19 @@ p {
 }
 
 .log{
-	
+
 	position:relative;
 	float:right;
 	color: black;
-	
-	
+
+
 }
 
+.box{
+  position: absolute;
+  left: 60%;
+  z-index: -1;
+  height: 20px;
+  width: 20px;
+  background-color: white;
+}

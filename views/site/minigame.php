@@ -17,7 +17,7 @@ AppAsset::register($this);
 <body>
 	<div id="top">
 	<span id="user"><?php echo Yii::$app->session['userName'];?></span>
-		<?php 
+		<?php
 			$today = date('Y-m-d');
 
 			$userName =Yii::$app->session['userName'];
@@ -26,7 +26,7 @@ AppAsset::register($this);
 			$gamecheck = $user->gameCheck;
 			if($gamecheck <=0 ){}
 			else{$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
-			
+
 			}
 			if($gamecheck <=0 ){}
 					else{
@@ -116,6 +116,7 @@ AppAsset::register($this);
 		</p>
 		<hr>
 	</div>
+	<div class="box"></div>
 		<div class="rule">
 
 			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapses" aria-expanded="false" aria-controls="collapses">游戏规则  </button>
