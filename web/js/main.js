@@ -169,3 +169,11 @@
 
 
 	}
+$('#value').keypress(function(e){
+	if(e.which == 13)
+	{
+		verifyorder($("#value").val());
+		//verifyorder(this.value);
+	}
+
+});

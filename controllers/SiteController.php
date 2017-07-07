@@ -156,8 +156,8 @@ class SiteController extends Controller
 
 		$gamecheck = $user->gameCheck;//游玩次数
 		$gamecount = $user;//全部关于那用户的
-		//$ans = rand(2,98);
-		$ans = 49;
+		$ans = rand(2,98);
+		//$ans = 49;
 
 		$min = 1;
 		$max = 99;
@@ -170,17 +170,19 @@ class SiteController extends Controller
 			if (Yii::$app->request->isAjax)
 			{
 				//===========================================   create first record  ======================================================
+				if($gamecheck >=5 ){
+								return false;
+							}
+				
 				$sgBalance = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one()->sg_balance;
 				if($sgBalance <=100 ){
 								return false;
 							}
 							
 				if(empty($userdata)){
-					
 						if($y <=1 || $y >=99 ){
 								return false;
-								
-							}
+						}
 						//create new data
 						$model = new GameRecord;
 						$model->ans=$ans;
@@ -189,8 +191,6 @@ class SiteController extends Controller
 						$model->record_1 = $y;	
 						$model->playingNow = $y;
 						$model->userID = $uid;
-						$model->load($data);
-						$model->save();
 						//For detect and adding bigger and smaller answer into database.
 							if($y != $ans){
 							//user ans bigger than ans
@@ -205,27 +205,22 @@ class SiteController extends Controller
 
 								}
 							//insert value to model, and save to database							
-							$model->load($data);
 							$model->save(false);
 							$gamecount->gameCheck = 1;
 							$gamecount->save(false);
 							
-							var_dump('000');
-							
-							
+							var_dump('000');	
 						}
 						
 						//if user straight correct
 						elseif ($y == $ans){
 							
 							$model->token=0;
-							$model->load($data);
 							$model->save(false);
 							$reward = User::find()->where('userID = :id' , [':id' => $uid ,])->one()->SGreward;
 							$reward += 10;
 							$gamecount->SGreward = $reward;
 							$gamecount->gameCheck = 5;
-							$gamecount->load($data);
 							$gamecount->save(false);
 							
 							//for result table
@@ -238,7 +233,6 @@ class SiteController extends Controller
 							$result->successTime = date('Y-m-d G-i-s');
 							$result->usedTimes = 1;
 							$result->reward = 10;
-							$result->load($data);
 							$result->save(false);
 						}
 
@@ -270,18 +264,19 @@ class SiteController extends Controller
 								
 							}
 							
-							$ans2 = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->ans;
-							$userDate = GameRecord::find()->where('userID = :id' , [':id' => $uid ])->orderBy(['playDate'=>SORT_DESC])->one()->playDate;
+							$record = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->orderBy(['playDate'=>SORT_DESC])->one();
+							$ans2 = $record->ans;
+							$userDate = $record->playDate;
 							
 						if($y != $ans2){
 					
-							$large = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->max_value;
-							$mini = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one()->min_value;
+							$large = $record->max_value;
+							$mini = $record->min_value;
 							if($y <=$mini || $y>=$large){
 									return false;
 								}
 							
-							$model = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one();
+							$model = $record;
 							
 							//common item start
 							if($y > $ans2){
@@ -333,7 +328,7 @@ class SiteController extends Controller
 							
 					elseif($y == $ans2){
 								
-								$model = GameRecord::find()->where('userID = :id and playDate = :pd', [':id' => $uid , ':pd'=> $today ])->one();
+								$model = $record;
 								$model->playingNow = $y;
 								
 								$model -> userID = $uid;
@@ -349,7 +344,8 @@ class SiteController extends Controller
 								$result->successTime = date('Y-m-d G-i-s');
 								
 								$sgData = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one();
-								$sgBalance = SGGameRewardBalance::find()->where('sg_reward_id = :gameid',[':gameid' => 1 ])->one()->sg_balance;
+								$sgBalance = $sgData->sg_balance;
+								$sgNegative = $sgData->sg_negative_balance;
 								
 							if($userDate == $today){
 								switch($gamecheck){
@@ -359,7 +355,7 @@ class SiteController extends Controller
 										$result->usedTimes = 1;
 										$result->reward = 10;
 										$sgBalance = $sgBalance - 10;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 10;
 										break;
 									case 1:
 										$model->record_2 = $y;
@@ -367,7 +363,7 @@ class SiteController extends Controller
 										$result->usedTimes = 2;
 										$result->reward = 5;
 										$sgBalance = $sgBalance - 5;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 5;
 										break;
 										
 									case 2:
@@ -376,7 +372,7 @@ class SiteController extends Controller
 										$result->usedTimes = 3;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 2;
 										break;
 									case 3:
 										$model->record_4 = $y;
@@ -384,7 +380,7 @@ class SiteController extends Controller
 										$result->usedTimes = 4;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 2;
 										break;
 									case 4:
 										$model->record_5 = $y;
@@ -392,7 +388,7 @@ class SiteController extends Controller
 										$result->usedTimes = 5;
 										$result->reward = 2;
 										$sgBalance = $sgBalance - 2;
-										$sgData->sg_negative_balance = 10;
+										$sgData->sg_negative_balance = $sgNegative + 2;
 										break;
 										
 								}
