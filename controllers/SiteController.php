@@ -82,7 +82,9 @@ class SiteController extends Controller
         $model = new User();
         if ( $model->login(Yii::$app->request->post())) {
 			$gameResult =  GameResult::find()->limit(7)->orderBy(['(successTime)'=> SORT_DESC])->all();
-			
+			foreach($gameResult as $k=>$game){
+				$gameResult[$k]['userID'] = User::find()->where('userID = :id' , [':id' => $game['userID']])->one()->userName;
+			}
             return $this->render('minigame',[ 'gameResult' => $gameResult]);
 			Yii::$app->end();
         }
