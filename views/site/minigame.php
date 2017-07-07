@@ -120,7 +120,7 @@ AppAsset::register($this);
 			
 			if($gamecheck >=5){
 							echo "您今天的次数已达成。请明天再来。";
-							return false;
+							
 						}	
 			elseif($gamecheck >=0 ){
 				?>
@@ -164,14 +164,39 @@ AppAsset::register($this);
 				  </tr>
 				  </table>
 				</div>
-				
-				
-				
 			</div>
 		</div>
 		
 		
+		<div id="rewardtable">
+			<table>
+				  <tr>
+					<th>中奖者</th>
+					<th>奖励</th>
+					<th>时间</th>
+				  </tr>
+				  
+				  
+							
+								
+					<?php foreach($gameResult as $data):?>
+                    <tr>
+                        <td><?php echo $data['userID']?></td>
+                        <td>RM <?php echo $data['reward']?></td>
+                        <td><?php echo $data['successTime']?></td>
+                    </tr>
+								
+								
+				
+								
+								
+					
+				 
+				  </table>
+			
 		
+		
+		</div>
 		
 		
 		
