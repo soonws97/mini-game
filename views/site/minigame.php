@@ -17,7 +17,7 @@ AppAsset::register($this);
 <body>
 	<div id="top">
 	<span id="user"><?php echo Yii::$app->session['userName'];?></span>
-		<?php 
+		<?php
 			$today = date('Y-m-d');
 
 			$userName =Yii::$app->session['userName'];
@@ -112,14 +112,15 @@ AppAsset::register($this);
 		</p>
 		<hr>
 	</div>
-	
+
 	<div class="chg">
-	
-			
+
+
 			<?php
-			
+
 			if($gamecheck >=5){
 							echo "您今天的次数已达成。请明天再来。";
+
 							
 						}	
 			elseif($gamecheck >=0 ){
@@ -131,9 +132,9 @@ AppAsset::register($this);
 
 
 			</div>
-	
-		
-	
+
+
+
 		<div class="rule">
 
 			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapses" aria-expanded="false" aria-controls="collapses">游戏规则  </button>
@@ -142,13 +143,13 @@ AppAsset::register($this);
 					用户只需在1 - 99 之间猜个数字。每位用户只能有<mark><b>5</b></mark>次机会，您只需要猜中系统给予的号码，就能领取我们派送的奖励。
 				<br>
 				</div>
-				
+
 				<div id="rewardtable">
 					<table>
 				  <tr>
 					<th>次数</th>
 					<th>金额</th>
-					
+
 				  </tr>
 				  <tr>
 					<td>1次</td>
@@ -164,6 +165,7 @@ AppAsset::register($this);
 				  </tr>
 				  </table>
 				</div>
+
 			</div>
 		</div>
 		
@@ -197,9 +199,6 @@ AppAsset::register($this);
 		
 		
 		</div>
-		
-		
-		
 			<h5 id="copyright"></h5>
 </div>
 

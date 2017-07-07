@@ -3,38 +3,71 @@
 	var max = 99;
 	var a  = 0;
 	var i = 0;
-	
+
+	// $(document).ready(function(){
+	// 	var min = $('#min').text();
+	// 	var max = $('#max').text();
+	// 	var mid = $('#to').text();
+	// 	min = parseInt(min);
+	// 	max = parseInt(max);
+	// 	val = max-min;
+	// 	if ( val >90 && val<100 ){
+	// 		$('.box').css({'height':'10%','width':'10%'});
+	// 	} else if ( val >80 && val<90 ){
+	// 		$('.box').css({'height':'20%','width':'20%'});
+	// 	}else if ( val >70 && val<80 ){
+	// 		$('.box').css({'height':'30%','width':'30%'});
+	// 	}else if ( val >60 && val<70 ){
+	// 		$('.box').css({'height':'40%','width':'40%'});
+	// 	}else if ( val >50 && val<60 ){
+	// 		$('.box').css({'height':'50%','width':'50%'});
+	// 	}else if ( val >40 && val<50 ){
+	// 		$('.box').css({'height':'60%','width':'60%'});
+	// 	}else if ( val >30 && val<40 ){
+	// 		$('.box').css({'height':'70%','width':'70%'});
+	// 	}else if ( val >20 && val<30 ){
+	// 		$('.box').css({'height':'80%','width':'80%'});
+	// 	}else if ( val >10 && val<20 ){
+	// 		$('.box').css({'height':'90%','width':'90%'});
+	// 	}else if ( val >0 && val<10 ){
+	// 		$('.box').css({'height':'95%','width':'95%'});
+	// 	}else if ( $.isNumeric(mid) ){
+	// 		$('.box').css({'height':'100%','width':'100%'});
+	// 	}
+	// })
+
 
 	function verifyorder(y){
-        
-		
+
+
+
 			if(y < 1){
-			
+
 				document.getElementById('value').value=null;
 				document.getElementById('value').focus();
 				return false;
-				
-			
+
+
 			}
-			
+
 			document.getElementById('value').value=null;
 			document.getElementById('value').focus();
-			
-			
-			
-			
+
+
+
+
 				/*if(y != ans){
 					//获得最大值
-					a = Math.max(y,ans); 
-					 
-					
+					a = Math.max(y,ans);
+
+
 					if(a == y){
 
 							if (parseInt(y) >= parseInt(max)){
 
 								document.getElementById('value').value=null;
 								document.getElementById('value').focus();
-								
+
 							}
 							else{
 
@@ -44,7 +77,7 @@
 								document.getElementById("max").innerHTML = max  ;
 								document.getElementById('value').value=null;
 								document.getElementById("value").focus();
-								
+
 								i = i + 1;
 								document.getElementById("time").innerHTML = "您还有 "+(6-i)+" 次机会哟！";
 								break;
@@ -58,8 +91,8 @@
 							if(parseInt(y) <= parseInt(min)){
 
 								document.getElementById('value').value=null;
-								document.getElementById('value').focus();	
-							
+								document.getElementById('value').focus();
+
 
 
 							}
@@ -72,9 +105,9 @@
 								document.getElementById("max").innerHTML = max  ;
 								document.getElementById('value').value=null;
 								document.getElementById("value").focus();
-								
+
 								i = i + 1;
-								document.getElementById("time").innerHTML = "您还有 "+(6-i)+" 次机会哟！";							
+								document.getElementById("time").innerHTML = "您还有 "+(6-i)+" 次机会哟！";
 								break;
 							}
 					}
@@ -109,28 +142,28 @@
 
 				}
 			*/
-		
-			
+
+
 			$.ajax({
 			   url: "index.php?r=site/key",
-			   
+
 			   type: 'post',
 			   data: {
-						 record:y, 						 
+						 record:y,
 						 _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
 					 },
-					 
+
 			   success: function (data) {
 				  console.log(data);
 				   location.reload();
-				  
+
 			   },
 				error: function(error){
 					console.log("Something went wrong", error);
 				}
 		  });
-				
-			
+
+
 
 
 
@@ -140,8 +173,7 @@ $('#value').keypress(function(e){
 	if(e.which == 13)
 	{
 		verifyorder($("#value").val());
-		//verifyorder(this.value);		
+		//verifyorder(this.value);
 	}
-			
+
 });
-	
