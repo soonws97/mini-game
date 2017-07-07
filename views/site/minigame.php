@@ -180,14 +180,14 @@ AppAsset::register($this);
 				  
 				  
 							
-								
+					<?php $gameResult =  GameResult::find()->limit(7)->orderBy(['(successTime)'=> SORT_DESC])->all();?>
 					<?php foreach($gameResult as $data):?>
                     <tr>
                         <td><?php echo $data['userID']?></td>
                         <td>RM <?php echo $data['reward']?></td>
                         <td><?php echo $data['successTime']?></td>
                     </tr>
-								
+						 <?php endforeach ;?>		
 								
 				
 								

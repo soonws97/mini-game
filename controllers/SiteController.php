@@ -135,12 +135,16 @@ class SiteController extends Controller
 		$model = new User();
 		if ( $model->login(Yii::$app->request->post())) {
 			
+			
             return $this->render('minigame');
 			Yii::$app->end();
         }
         return $this->render('login', [
             'model' => $model,
         ]);
+		
+		//$gameResult =  GameResult::find()->limit(7)->orderBy(['(successTime)'=> SORT_DESC])->all();
+         //return $this->render('minigame',['model' =>$model , 'gameResult' => $gameResult]);
 	}
 	
 	public function actionKey()
