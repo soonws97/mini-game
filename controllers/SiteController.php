@@ -81,8 +81,9 @@ class SiteController extends Controller
 
         $model = new User();
         if ( $model->login(Yii::$app->request->post())) {
+			$gameResult =  GameResult::find()->limit(7)->orderBy(['(successTime)'=> SORT_DESC])->all();
 			
-            return $this->render('minigame');
+            return $this->render('minigame',[ 'gameResult' => $gameResult]);
 			Yii::$app->end();
         }
         return $this->render('login', [
@@ -129,23 +130,24 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-	
+/* repeated function with actionIndex, this used when link is site/minigame
 	public function actionMinigame()
 	{
 		$model = new User();
 		if ( $model->login(Yii::$app->request->post())) {
 			
 			
-            return $this->render('minigame');
+           $gameResult =  GameResult::find()->limit(7)->orderBy(['(successTime)'=> SORT_DESC])->all();
+         
+            return $this->render('minigame',[ 'gameResult' => $gameResult]);
 			Yii::$app->end();
         }
         return $this->render('login', [
             'model' => $model,
         ]);
 		
-		//$gameResult =  GameResult::find()->limit(7)->orderBy(['(successTime)'=> SORT_DESC])->all();
-         //return $this->render('minigame',['model' =>$model , 'gameResult' => $gameResult]);
 	}
+	*/
 	
 	public function actionKey()
 	

@@ -108,6 +108,15 @@ p {
 
 }
 
+#reward{
+	position:relative;
+	font-size: 14px;
+	text-align: left;
+	padding:10px;
+	font-family: verdana;
+
+	
+}
 
 #rewardtable{
 	background-color: white;

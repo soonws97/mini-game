@@ -170,8 +170,8 @@ AppAsset::register($this);
 		</div>
 		
 		
-		<div id="rewardtable">
-			<table>
+		<div id="reward">
+			<table id="rewardtable">
 				  <tr>
 					<th>中奖者</th>
 					<th>奖励</th>
@@ -179,11 +179,12 @@ AppAsset::register($this);
 				  </tr>
 				  
 				  
-							
+					
 					<?php $gameResult =  GameResult::find()->limit(7)->orderBy(['(successTime)'=> SORT_DESC])->all();?>
+					<?php var_dump(User::find()->one()); ?>
 					<?php foreach($gameResult as $data):?>
                     <tr>
-                        <td><?php echo $data['userID']?></td>
+                        <td><?php echo User::find()->where('userID = :id' ,[':id' => $data['userID']])->one()->userName;  ?></td>
                         <td>RM <?php echo $data['reward']?></td>
                         <td><?php echo $data['successTime']?></td>
                     </tr>
