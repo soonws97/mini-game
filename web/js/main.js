@@ -7,7 +7,6 @@
 
 	function verifyorder(y){
         
-
 		
 			if(y < 1){
 			
@@ -137,4 +136,12 @@
 
 
 	}
+$('#value').keypress(function(e){
+	if(e.which == 13)
+	{
+		verifyorder($("#value").val());
+		//verifyorder(this.value);		
+	}
+			
+});
 	

@@ -148,18 +148,6 @@ AppAsset::register($this);
 			<h5 id="copyright"></h5>
 </div>
 
-<script>
-
-	document.getElementById("value")
-    .addEventListener("keyup", function(event) {
-    event.preventDefault();
-    if (event.keyCode == 13) {
-        document.getElementById("btnSubmit").click();
-    }
-});
-
-</script>
-
 </body>
 
 </html>
