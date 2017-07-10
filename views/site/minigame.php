@@ -5,6 +5,8 @@ use app\models\GameResult;
 use app\models\User;
 use app\assets\AppAsset;
 
+
+
 AppAsset::register($this);
 ?>
 <head>
@@ -24,15 +26,15 @@ AppAsset::register($this);
 			$user = User::find()->where('userName = :name' ,[':name' => $userName])->one();
 			$uid = $user->userID;
 			$gamecheck = $user->gameCheck;
-			if($gamecheck <=0 ){}
-					else{
-							$gamedata = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one();
-							$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
-							$ansNow = $gamedata->ans;
-							$val = $gamedata->playingNow;
-							$getToken = $gamedata->token;
-							$nowMin = $gamedata->min_value;
-					}
+			//var_dump($user);exit;
+			if($gamecheck >=1 ){
+					$gamedata = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one();
+					//$date = GameRecord::find()->where('userID = :id and playDate =:t' , [':id' => $uid , ':t'=> $today ])->one()->playDate;
+					$ansNow = $gamedata->ans;
+					$val = $gamedata->playingNow;
+					$getToken = $gamedata->token;
+					$nowMin = $gamedata->min_value;}
+			else{}
 			?>
 
 		<a href="<?php echo yii\helpers\Url::to(['site/logout'])?>" class="log">登出</a>

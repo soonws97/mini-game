@@ -21,7 +21,7 @@ $this->title = $name;
         The above error occurred while the Web server was processing your request.
     </p>
     <p>
-        Please contact us if you think this is a server error or click <a href href="http://localhost/mini-game/web/index.php?r=site%2Flogin">here</a> to back login page. Thank you.
+        Please contact us if you think this is a server error or click <a href="http://localhost/mini-game/web/index.php?r=site%2Flogin">here</a> to back login page. Thank you.
     </p>
 
 </div>
